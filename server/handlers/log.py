@@ -1,8 +1,7 @@
 from tornado.web import RequestHandler
 import sqlite3 as sl
-import tornado
 import glob
-import json
+from pathlib import Path
 
 con = sl.connect('datapaths.db')
 
@@ -14,38 +13,48 @@ con = sl.connect('datapaths.db')
 #         );
 #     """)
 
+# con.execute("DELETE FROM DATAPATHS")
+
 class LogHandler(RequestHandler):
-    """Render the template for the loading page"""
 
     def get(self):
-        """Handle a GET request to load the client-view application"""
-        self.render("home.html")
+        with con:
+            paths = con.execute("SELECT * FROM DATAPATHS")
+
+        self.render("log_view_list.html", file_paths=paths)
 
 class LogViewHandler(RequestHandler):
-    """Render the template to view all log files available"""
+
     def post(self):
         # get the file names from the log folder
         path = self.get_body_argument('filepath')
+
         with con:
             data = con.execute("SELECT * FROM DATAPATHS WHERE paths = :f", {'f': path})
             if len(data.fetchall()) == 0:
                 con.execute('INSERT INTO DATAPATHS (paths) values(?)', (path, ))
-            
-            
-
-        """Handle a GET request to render all file names"""
-        self.write('added successfully')
+                self.write('Added Successfully')
+            else:
+                self.write('Entry already exists!')
+        
+        con.commit()
     
     def get(self):
-        path = ''
+        paths = self.get_arguments("paths")[0]
+
         with con:
-            data = con.execute("SELECT * FROM DATAPATHS")
+            data = con.execute("SELECT * FROM DATAPATHS WHERE paths = :f", {'f': paths})
             for row in data:
                 path = row
 
         l = []
-        for f in glob.iglob(path[1], recursive=True):
-            # split the string to only get the file name, not the whole path
+        for f in glob.iglob(path[1]+"/*.txt", recursive=True):
             l.append(f.split("/")[-1])
-        
-        self.render("logview.html", file_names=l)
+
+        self.render("log_view.html", file_names=l)
+
+class LogViewFileHandler(RequestHandler):
+    
+    def get(self, path):
+        t = "hello world"
+        self.render("log_view_file.html", t=t)

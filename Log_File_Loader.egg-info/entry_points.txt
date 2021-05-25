@@ -1,0 +1,3 @@
+[console_scripts]
+log_file = server:main
+

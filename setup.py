@@ -7,7 +7,7 @@ requires = [
 ]
 
 setup(
-    name='tornado_todo',
+    name='Log File Loader',
     version='0.0',
     description='Log File loader',
     author='Amitesh Sharma',
@@ -17,7 +17,7 @@ setup(
     install_requires=requires,
     entry_points={
         'console_scripts': [
-            'serve_app = server:main',
+            'log_file = server:main',
         ],
     },
 )
