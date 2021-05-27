@@ -54,7 +54,16 @@ class LogViewHandler(RequestHandler):
         self.render("log_view.html", file_names=l)
 
 class LogViewFileHandler(RequestHandler):
+
+    # def get(self, path):
+    #     self.render("log_view_file.html")
     
-    def get(self, path):
-        t = "hello world"
-        self.render("log_view_file.html", t=t)
+    def post(self, path):
+        # current_file = self.get_argument("filename")
+        p = self.get_argument("filepath")
+        text = "hello hello hello "
+        self.render("log_view_file.html",
+            file_name=path,
+            path_name=p,
+            log_text=text
+        )

@@ -1,7 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-GB">
     <head>
         <title>Storm Chasing Tornado</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
 
     <body>
@@ -9,7 +13,12 @@
             <h1>List of all log files here</h1>
             <ul id="file-list">
                 {% for f in file_names %}
-                    <li>{{ f }}</li>
+                    {% set file_name = f.split('\\')[-1] %}
+                    <form id="form-file" method="post" action="{{ f'/log/view/dataload/{file_name}' }}">
+                        <button>{{ f }}</button>
+                        <input type="hidden" value="{{ f.split('\\')[-1] }}" name="filename" />
+                        <input type="hidden" value="{{ f }}" name="filepath" />
+                    </form>
                 {% end %}
             </ul>
         </div>
@@ -22,11 +31,7 @@
         }
 
         const ul = document.getElementById('file-list');
-        ul.onclick = (event) => {
-            const target = getEventTarget(event);
-            const splitText = target.innerHTML.split("\\").slice(-1).pop();
-            
-            window.location.href = "/log/view/dataload/"+splitText;
-        }
+        $("#sum_form").submit();
+
     </script>
 </html>
