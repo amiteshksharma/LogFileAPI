@@ -15,6 +15,11 @@ con = sl.connect('datapaths.db')
 
 # con.execute("DELETE FROM DATAPATHS")
 
+class HomeHandler(RequestHandler):
+
+    def get(self):
+        self.render("home.html")
+
 class LogHandler(RequestHandler):
 
     def get(self):
@@ -55,13 +60,26 @@ class LogViewHandler(RequestHandler):
 
 class LogViewFileHandler(RequestHandler):
 
-    # def get(self, path):
-    #     self.render("log_view_file.html")
+    def get(self, path):
+        p = self.get_argument("pathname")
+        count = self.get_argument("count")
+
+        # read the last 100 characters of the file
+        f = open(p, 'r')
+        text = f.read()
+
+        self.write(text[-1000:])
+
     
     def post(self, path):
         # current_file = self.get_argument("filename")
         p = self.get_argument("filepath")
-        text = "hello hello hello "
+
+        # open and read the file
+        f = open(p, 'r')
+        text = f.read()
+        f.close()
+
         self.render("log_view_file.html",
             file_name=path,
             path_name=p,

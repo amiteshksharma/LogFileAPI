@@ -2,8 +2,7 @@ from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 from tornado.options import define, options
 from tornado.web import Application
-from server.handlers.home import HomeHandler
-from server.handlers.log import LogHandler, LogViewHandler, LogViewFileHandler
+from server.handlers.log import LogHandler, LogViewHandler, LogViewFileHandler, HomeHandler
 import os
 
 define('port', default=8888, help='port to listen on')

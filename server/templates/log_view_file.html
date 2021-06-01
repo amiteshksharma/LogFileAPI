@@ -7,8 +7,10 @@
 
     <body>
         <div class="form-div">
-            <h1 class="form-title"> {{ file_name }}</h1>
-            <p> {{ log_text }}</p>
+            <h1 id="form-title"> {{ file_name }}</h1>
+            <button id="character-count">View last 1000 characters</button>
+            <p id="log-file-text"> {{ log_text }}</p>
+            <p id="path-name"> {{ path_name }}</p>
         </div>
     </body>
 
@@ -16,5 +18,17 @@
         $("#btn-redirect").click(function() {
             window.location.href = "/log/view";
         });
+
+        const fileName = document.getElementById("form-title").textContent.substring(1);
+        const fileText = document.getElementById("log-file-text")
+        const pathName = document.getElementById("path-name").textContent
+
+        $('#character-count').click(() => {
+            $.get(`/log/view/dataload/${fileName}?count=1000&pathname=${pathName}`,
+                function(data, status) {
+                    fileText.innerHTML = data.replaceAll("\n", "<br />");
+                }
+            );
+        })
     </script>
 </html>
