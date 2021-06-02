@@ -7,5 +7,5 @@ Log_File_Loader.egg-info/requires.txt
 Log_File_Loader.egg-info/top_level.txt
 server/__init__.py
 server/handlers/__init__.py
-server/handlers/home.py
+server/handlers/api.py
 server/handlers/log.py

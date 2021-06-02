@@ -3,6 +3,7 @@ from tornado.ioloop import IOLoop
 from tornado.options import define, options
 from tornado.web import Application
 from server.handlers.log import LogHandler, LogViewHandler, LogViewFileHandler, HomeHandler
+from server.handlers.api import APIFileHandler, APIFileListHandler
 import os
 
 define('port', default=8888, help='port to listen on')
@@ -18,6 +19,8 @@ def main():
         ("/log/view/dataload/(?P<path>\w*.txt)", LogViewFileHandler),
         (r"/log/view/dataload", LogViewHandler), 
         ("/log/view", LogHandler),
+        ("/log/api/(?P<path>\w*.txt)", APIFileHandler),
+        ("/log/api", APIFileListHandler),
         ("/", HomeHandler),
     ], **settings)
     http_server = HTTPServer(app)

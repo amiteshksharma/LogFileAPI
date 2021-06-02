@@ -64,7 +64,7 @@ class LogViewFileHandler(RequestHandler):
         p = self.get_argument("pathname")
         count = self.get_argument("count")
 
-        # read the last 100 characters of the file
+        # read the last 1000 characters of the file
         f = open(p, 'r')
         text = f.read()
 
