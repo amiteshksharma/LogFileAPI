@@ -1,0 +1,52 @@
+Log File API - Load log files 
+
+Routes for the client rendering
+
+/log/view/dataload/(?P<path>\w*.txt)
+    This will render the text in the specified path
+    Takes in a body JSON object containing: 
+        { 
+            filename: string (required)
+            filepath: string (required)
+        }
+    
+    It also takes in two query parameters
+        count - the last n characters to display
+        pathname - the path of the folder containing the log file
+
+/log/view/dataload
+    This adds a folder path to the local DB or returns all the files within the folder
+    GET - render the HTML page containing all .txt files in the folder
+    POST - add the absolute path to the the local DB
+        Takes in the following body:
+        {
+            filepath: string (required)
+        }
+
+/log/view
+    The home page where you can add paths to directories containing log files
+    uses the POST /log/view/dataload
+
+/
+    The landing page when going to localhost:8888
+
+######################################
+########### The API routes ###########
+######################################
+
+/log/api/(?P<path>\w*.txt)
+    Returns the content of the .txt file.
+    Takes in the following inside the body:
+    {
+        pathname: string (required)
+    }
+
+    Takes in a query parameter 'count' - the last n characters to display
+    Takes in a query parameter 'lines' - the last n lines to display
+
+/log/api
+    Returns the list of files under the listed directory
+    Takes in the following inside the body:
+    {
+        pathname: string (required)
+    }

@@ -9,24 +9,29 @@ class APIFileHandler(RequestHandler):
 
     def post(self, path):
         full_path = self.get_argument("pathname")
-        count = self.get_argument("count")
-
-        int_count = 0
-        try:
-            int_count = int(count) * -1
-        except ValueError: 
-            self.write(json.dumps({'error': "Invalid value for the query parameter [ count ]"}))
-            return
+        count = self.get_argument("count", None)
+        lines = self.get_argument("lines", None)
         
         p = full_path + "\\" + path
         f = open(p, 'r')
-        text = f.read()
-        f.close()
+        data = {}
 
-        if not count:
-            data = json.dumps({'text': text})
+        if (count) and (lines):
+            self.write(json.dumps({'error': "Can't have both keys 'lines' and 'count'"}))
+        elif lines:
+            get_lines = f.readlines()
+            f.close()
+            int_lines = int(lines) * -1
+            data = json.dumps({'text': get_lines[int_lines:]})     
         else:
-            data = json.dumps({'text': text[int_count:]}) 
+            text = f.read()
+            f.close()
+            if count:
+                int_count = int(count) * -1  
+                data = json.dumps({'text': text[int_count:]}) 
+            else:
+                data = json.dumps({'text': text})
+        
         self.write(data)
 
 # Get all files from a specified path
